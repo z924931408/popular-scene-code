@@ -1,0 +1,34 @@
+server:
+  port: 8095
+  servlet:
+    session:
+      timeout: 30m
+    context-path: /activiti7
+  tomcat:
+    accesslog:
+      enabled: true
+      suffix: '.log'
+      prefix: access_log
+      file-date-format: '.yyyy-MM-dd'
+      directory: logs
+    uri-encoding: UTF-8
+    threads:
+      max: 1000
+      min-spare: 30
+    basedir: '/app/logs/tomcat'
+
+spring:
+  profiles:
+    active: "quartz,common,@activeProfile@"
+
+
+logging:
+  level:
+    org:
+      apache:
+        catalina: INFO
+        tomcat: INFO
+    org.activiti.engine.impl.persistence.entity: trace
+
+
+

@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    name: druidDataSoure
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/example?useUnicode=true&characterEncoding=UTF-8&ueSSL=false&serverTimezone=GMT%2B8
+      username: root
+      password: 123456
+
+  activiti:
+    database-schema-update: true
+    db-history-used: true
+    check-process-definitions: true
+    history-level: full
+
+
