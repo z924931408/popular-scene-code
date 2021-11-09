@@ -1,0 +1,42 @@
+#spring:
+#  datasource:
+#    name: druidDataSoure
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    druid:
+#      driver-class-name: com.mysql.jdbc.Driver
+#      url: jdbc:mysql://127.0.0.1:3306/example?useUnicode=true&characterEncoding=UTF-8&ueSSL=false&serverTimezone=GMT%2B8
+#      username: root
+#      password: 123456
+#
+
+spring:
+  main:
+    allow-bean-definition-overriding: true #设置为true，表示后发现的bean会覆盖之前相同名称的bean。
+  application:
+    name: activiti7
+
+sharding:
+  jdbc:
+    datasource:
+      names: master,slave #主从数据源
+      master:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver #数据库驱动，连接时一定要加区时
+        url: jdbc:mysql://127.0.0.1:3306/master?useUnicode=true&characterEncoding=UTF-8&ueSSL=false&serverTimezone=GMT%2B8
+        username: root
+        password: zhu123456
+      slave:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver #数据库驱动，连接时一定要加区时
+        url: jdbc:mysql://127.0.0.2:3306/master?useUnicode=true&characterEncoding=UTF-8&ueSSL=false&serverTimezone=GMT%2B8
+        username: root
+        password: zhu123456
+    config: #读写分离配置
+      masterslave:
+        master-data-source-name: master #主数据库配置
+        slave-data-source-names: slave #从数据库配置（多个以逗号隔离）
+        load-balance-algorithm-type: round_robin #提供轮询与随机，这里选择用轮询
+        name: ms
+      props:
+        sql:
+          show: true #打印sql日志
