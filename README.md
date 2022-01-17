@@ -3,4 +3,6 @@
 
 已完成——
 
-1、SpringBoot集成activiti7
+一、SpringBoot集成activiti7【SpringBoot+Activiti7】;
+
+二、Springboot+kafka流式处理【kafka流式计算】;
