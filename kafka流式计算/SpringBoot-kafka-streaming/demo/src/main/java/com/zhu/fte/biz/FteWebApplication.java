@@ -3,6 +3,7 @@ package com.zhu.fte.biz;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -15,6 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ServletComponentScan
 @EnableScheduling
 @SpringBootApplication
+@EnableKafkaStreams
 public class FteWebApplication {
     public static void main(String[] args) {
         SpringApplication.run(FteWebApplication.class,args);

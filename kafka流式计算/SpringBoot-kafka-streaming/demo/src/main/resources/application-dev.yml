@@ -47,12 +47,28 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       # 值的反序列化方式
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: "stream"
     listener:
       # 在侦听器容器中运行的线程数。
       concurrency: 5
       #listner负责ack，每调用一次，就立即commit
       ack-mode: manual_immediate
       missing-topics-fatal: false
+    streams:
+      application-id: kafka-demo
+      bootstrap-servers: 127.0.0.1:9092,127.0.0.2:9092,127.0.0.3:9092
+      properties:
+        default:
+          key:
+            serde: org.apache.kafka.common.serialization.Serdes$StringSerde # 序列化key
+          value:
+            serde: org.springframework.kafka.support.serializer.JsonSerde # 序列化value
+          timestamp:
+            extractor: org.apache.kafka.streams.processor.WallclockTimestampExtractor
+        spring:
+            json:
+              trusted:
+                packages: com.zhu.fte.biz.* # 允许json反序列化的包
 
 sharding:
   jdbc:
@@ -81,6 +97,3 @@ sharding:
           show: true #打印sql日志
 
 
-#是否激活 swagger true or false
-swagger:
-  enable: true
