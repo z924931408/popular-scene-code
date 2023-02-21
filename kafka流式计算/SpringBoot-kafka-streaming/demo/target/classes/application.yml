@@ -19,7 +19,7 @@ server:
 
 spring:
   profiles:
-    active: "quartz,common,@activeProfile@"
+    active: "quartz,common,dev"
 
 
 #logging:
