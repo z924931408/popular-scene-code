@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="zookeeper分布式锁" />
         <module name="zookeeper-demo" />
       </profile>
     </annotationProcessing>
