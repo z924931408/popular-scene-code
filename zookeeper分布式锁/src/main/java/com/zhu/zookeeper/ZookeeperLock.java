@@ -1,8 +1,6 @@
 package com.zhu.zookeeper;
 
-import org.apache.zookeeper.WatchedEvent;
-import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.*;
 
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
@@ -66,6 +64,23 @@ public class ZookeeperLock implements Watcher {
         }
     }
 
+
+
+    /**
+     * 创建节点
+     * @param path 节点path
+     * @param data 初始数据内容
+     * @param needWatch
+     * @return
+     * @throws InterruptedException
+     * @throws KeeperException
+     */
+    public boolean createPath(String path, String data, boolean needWatch) throws InterruptedException, KeeperException {
+        if (zk.exists(path, needWatch) == null){
+            System.out.println(CURREND_OF_THRESAD + "节点创建成功，Path：" + this.zk.create(path, data.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT) +", content:" + data);
+        }
+        return true;
+    }
 
     @Override
     public void process(WatchedEvent watchedEvent) {
