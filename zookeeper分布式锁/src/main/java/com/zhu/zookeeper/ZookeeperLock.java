@@ -70,7 +70,7 @@ public class ZookeeperLock implements Watcher {
      * 创建节点
      * @param path 节点path
      * @param data 初始数据内容
-     * @param needWatch
+     * @param 
      * @return
      * @throws InterruptedException
      * @throws KeeperException
