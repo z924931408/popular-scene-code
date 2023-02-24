@@ -70,7 +70,7 @@ public class ZookeeperLock implements Watcher {
      * 创建节点
      * @param path 节点path
      * @param data 初始数据内容
-     * @param 
+     * @param
      * @return
      * @throws InterruptedException
      * @throws KeeperException
@@ -81,6 +81,19 @@ public class ZookeeperLock implements Watcher {
         }
         return true;
     }
+
+
+    /**
+     * 获取锁
+     * @throws InterruptedException
+     * @throws KeeperException
+     */
+    private void getLock() throws InterruptedException, KeeperException {
+        currPath = zk.create(SUB_PATH, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
+        System.out.println(CURREND_OF_THRESAD + "创建锁路径：" + currPath);
+      
+    }
+
 
     @Override
     public void process(WatchedEvent watchedEvent) {
