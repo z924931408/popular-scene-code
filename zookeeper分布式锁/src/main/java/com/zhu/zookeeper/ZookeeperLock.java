@@ -1,8 +1,11 @@
 package com.zhu.zookeeper;
 
 import org.apache.zookeeper.*;
+import org.apache.zookeeper.data.Stat;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -91,9 +94,49 @@ public class ZookeeperLock implements Watcher {
     private void getLock() throws InterruptedException, KeeperException {
         currPath = zk.create(SUB_PATH, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
         System.out.println(CURREND_OF_THRESAD + "创建锁路径：" + currPath);
-      
+
     }
 
+
+
+    /**
+     * 检查自己是不是最小节点
+     * @return
+     * @throws InterruptedException
+     * @throws KeeperException
+     */
+    public boolean checkMinPath() throws InterruptedException, KeeperException {
+        List<String> subNodes = zk.getChildren(GROUP_PATH,false);
+        //对节点进行排序
+        Collections.sort(subNodes);
+        int index = subNodes.indexOf(currPath.substring(GROUP_PATH.length() + 1));
+        switch (index){
+            case -1:{
+                System.out.println(CURREND_OF_THRESAD + "本节点已不在了..." + currPath);
+                return false;
+            }
+            case 0:{
+                System.out.println(CURREND_OF_THRESAD + "子节点中，我果然是老大" + currPath);
+                return true;
+            }
+
+            default:
+                this.waitPath = GROUP_PATH + "/" + subNodes.get(index - 1);
+                System.out.println(CURREND_OF_THRESAD + "获取子节点中，排在我前面的" + waitPath);
+                try {
+                    zk.getData(waitPath, true, new Stat());
+                    return false;
+                }catch (KeeperException e){
+                    if (zk.exists(waitPath,false) == null){
+                        System.out.println(CURREND_OF_THRESAD + "子节点中，排在前面的" + waitPath + "已失踪，幸福来得太突然");
+                        return checkMinPath();
+                    }else {
+                        throw e;
+                    }
+                }
+
+        }
+    }
 
     @Override
     public void process(WatchedEvent watchedEvent) {
