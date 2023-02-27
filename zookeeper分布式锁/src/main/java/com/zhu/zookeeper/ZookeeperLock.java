@@ -138,8 +138,45 @@ public class ZookeeperLock implements Watcher {
         }
     }
 
-    @Override
-    public void process(WatchedEvent watchedEvent) {
 
+    /**
+     * 获取锁成功
+     */
+    public void getLockSuccess(){
+        
+    }
+
+
+    @Override
+    public void process(WatchedEvent event) {
+        if (event == null){
+            return;
+        }
+
+        Event.KeeperState keeperState = event.getState();
+        Event.EventType eventType = event.getType();
+        if (Event.KeeperState.SyncConnected == keeperState){
+            if (Event.EventType.None == eventType){
+                System.out.println(CURREND_OF_THRESAD + "成功连接上ZK服务器");
+                countDownLatch.countDown();
+            } else if (event.getType() == Event.EventType.NodeDeleted && event.getPath().equals(waitPath)) {
+                System.out.println(CURREND_OF_THRESAD + "收到情报，排在我前面第家伙已挂，我是不是可以竞争锁了？");
+                try {
+                    if (checkMinPath()){
+                        getLockSuccess();
+                    }
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (KeeperException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (Event.KeeperState.Disconnected == keeperState){
+                System.out.println(CURREND_OF_THRESAD + "与ZK服务器断开连接");
+            } else if (Event.KeeperState.AuthFailed == keeperState){
+                System.out.println(CURREND_OF_THRESAD + "权限检查失败");
+            }else if (Event.KeeperState.Expired == keeperState){
+                System.out.println(CURREND_OF_THRESAD + "回话失效");
+            }
+        }
     }
 }
