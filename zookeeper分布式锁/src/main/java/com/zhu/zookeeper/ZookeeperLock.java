@@ -142,8 +142,18 @@ public class ZookeeperLock implements Watcher {
     /**
      * 获取锁成功
      */
-    public void getLockSuccess(){
-        
+    public void getLockSuccess() throws InterruptedException, KeeperException {
+        if (zk.exists(this.waitPath, false) == null){
+            System.out.println(CURREND_OF_THRESAD + "本节点已不在了");
+            return;
+        }
+        System.out.println(CURREND_OF_THRESAD + "获取锁成功，赶紧干活");
+        Thread.sleep(2000);
+        //sekfPath  ==> /locks/sub0000000068
+        System.out.println(CURREND_OF_THRESAD + "删除本节点" + waitPath);
+        zk.delete(this.waitPath, -1);
+        closeConnection();
+        semaphpre.countDown();
     }
 
 
