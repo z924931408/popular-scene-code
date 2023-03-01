@@ -69,6 +69,38 @@ public class ZookeeperLock implements Watcher {
 
 
 
+
+    public static void main(String[] args) {
+        for (int i = 0; i < THREAD_NUM; i++) {
+            final int threadId = i + 1;
+            new Thread(() -> {
+                try {
+                    ZookeeperLock dc = new ZookeeperLock(threadId);
+                    dc.createConnection(CONNECTION_STRING, SESSION_TIMEOUT);
+                    synchronized (semaphpre) {
+                        dc.createPath(GROUP_PATH, "该节点线程由" + threadId + "创建", true);
+                    }
+                    dc.getLock();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (KeeperException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
+        }
+        try {
+            semaphpre.await();
+            System.out.println("所有线程运行结束");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+
     /**
      * 创建节点
      * @param path 节点path
