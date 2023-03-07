@@ -126,7 +126,9 @@ public class ZookeeperLock implements Watcher {
     private void getLock() throws InterruptedException, KeeperException {
         currPath = zk.create(SUB_PATH, null, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
         System.out.println(CURREND_OF_THRESAD + "创建锁路径：" + currPath);
-
+        if (checkMinPath()){
+            getLockSuccess();
+        }
     }
 
 
