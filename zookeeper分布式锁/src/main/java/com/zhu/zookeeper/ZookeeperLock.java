@@ -31,7 +31,7 @@ public class ZookeeperLock implements Watcher {
     //锁竞争的节点
     private static final String SUB_PATH = "/locks/sub";
     //zookeeper服务器地址
-    private static final String CONNECTION_STRING = "127.0.0.1:2181";
+    private static final String CONNECTION_STRING = "192.168.1.73:2181";
     //开启测试线程
     private static final int THREAD_NUM = 10;
     //确保连接zk成功
