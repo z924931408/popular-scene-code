@@ -6,3 +6,7 @@
 一、SpringBoot集成activiti7【SpringBoot+Activiti7】;
 
 二、Springboot+kafka流式处理【kafka流式计算】;
+
+三、Zookeeper分布式锁；
+
+四、可扩展和基于windows系统的一键处理表格小工具【auto-put-file】
